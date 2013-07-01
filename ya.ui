@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>591</width>
-    <height>404</height>
+    <height>411</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -162,7 +162,7 @@
      <x>0</x>
      <y>0</y>
      <width>591</width>
-     <height>22</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu">
@@ -178,6 +178,9 @@
    <property name="text">
     <string>Выход</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+Q</string>
+   </property>
   </action>
  </widget>
  <resources/>
@@ -189,8 +192,8 @@
    <slot>close()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>557</x>
-     <y>163</y>
+     <x>-1</x>
+     <y>-1</y>
     </hint>
     <hint type="destinationlabel">
      <x>295</x>
