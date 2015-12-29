@@ -43,9 +43,8 @@ class YaSearch:
                 result += child.childNodes[0].nodeValue
         return result
 
-    def __init__(self, api_user, api_key):
-        self._api_user = api_user
-        self._api_key = api_key
+    def __init__(self, user_uri):
+        self._uri = str(user_uri)
 
     def _get_result_size(self, dom):
         for foundNode in dom.getElementsByTagName('found'):
@@ -90,8 +89,7 @@ class YaSearch:
 
         page -= 1
         query = unicode(query) + request_suffix
-        params = {'user' : self._api_user, 'key' : self._api_key}
-        search_url = u'https://yandex.ru/search/xml?' + urllib.urlencode(params)
+        search_url = u'https://yandex.ru/search/xml?' + self._uri
         post_data = self.REQUEST_TEMPLATE % (query.encode('utf-8'), str(page))
         req = urllib2.Request(search_url, post_data)
         response = urllib2.urlopen(req)

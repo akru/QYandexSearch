@@ -32,11 +32,10 @@ class YSearch(QtGui.QMainWindow):
         fname = QtGui.QFileDialog.getSaveFileName(s, "", "", "Text file (*.txt)")
         s.ui.lineEdit_4.setText(fname)
         s.ui.listWidget.addItem(u'Выбран выходной файл: %s' % fname)
-        s.ofile = file(fname, "w")
+        s.ofile = file(fname, "w+")
 
     def read_input_file(s):
-        API_USER, API_KEY = s.ui.lineEdit.text().split("&")
-        y = YaSearch(API_USER.split("=")[1], API_KEY.split("=")[1])
+        y = YaSearch(s.ui.lineEdit.text())
         for line in s.ifile:
             line = line.split("\n")[0]
             if line.strip() is not "":
@@ -49,6 +48,7 @@ class YSearch(QtGui.QMainWindow):
                     else:
                         line += '\n' + results.error.description
 
+                print line
                 s.ofile.write(line+SEPARATOR)
         s.ui.listWidget.addItem(u'Поиск завершен.')
 
