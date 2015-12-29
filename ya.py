@@ -23,23 +23,21 @@ class YSearch(QtGui.QMainWindow):
         s.connect(s.ui.tryButton, QtCore.SIGNAL('clicked()'), s.read_input_file)
 
     def open_input_file(s):
-        s.input_fname = QtGui.QFileDialog.getOpenFileName(s, "", "", "Text file (*.txt)")
-        s.ui.lineEdit_3.setText(s.input_fname)
-        s.ui.listWidget.addItem(u'Выбран исходный файл: %s' % s.input_fname)
+        fname = QtGui.QFileDialog.getOpenFileName(s, "", "", "Text file (*.txt)")
+        s.ui.lineEdit_3.setText(fname)
+        s.ui.listWidget.addItem(u'Выбран исходный файл: %s' % fname)
+        s.ifile = file(fname, "r")
 
     def open_output_file(s):
         fname = QtGui.QFileDialog.getSaveFileName(s, "", "", "Text file (*.txt)")
-        if len(fname) > 0:
-            s.ui.lineEdit_4.setText(fname)
-            s.ui.listWidget.addItem(u'Выбран выходной файл: %s' % fname)
-            s.output_fname = fname
+        s.ui.lineEdit_4.setText(fname)
+        s.ui.listWidget.addItem(u'Выбран выходной файл: %s' % fname)
+        s.ofile = file(fname, "w")
 
     def read_input_file(s):
-        input_file = open(s.input_fname, 'r')                                 
-        output_file = open(s.output_fname, 'w')                                 
-        API_USER, API_KEY = s.ui.lineEdit.text().split("@")
-        y = YaSearch(API_USER, API_KEY)
-        for line in input_file:
+        API_USER, API_KEY = s.ui.lineEdit.text().split("&")
+        y = YaSearch(API_USER.split("=")[1], API_KEY.split("=")[1])
+        for line in s.ifile:
             line = line.split("\n")[0]
             if line.strip() is not "":
                 s.ui.listWidget.addItem(u'Поиск: %s' % line)
@@ -51,11 +49,9 @@ class YSearch(QtGui.QMainWindow):
                     else:
                         line += '\n' + results.error.description
 
-                output_file.write(line+SEPARATOR)
+                s.ofile.write(line+SEPARATOR)
         s.ui.listWidget.addItem(u'Поиск завершен.')
 
-
- 
 if __name__ == "__main__":
     app = QtGui.QApplication(sys.argv)
     win = YSearch()
